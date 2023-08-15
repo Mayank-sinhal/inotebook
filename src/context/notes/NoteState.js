@@ -40,7 +40,7 @@ const NoteState = (props) => {
   //delete a notee
 
   const deleteNote = async (id) => {
-    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+    await fetch(`${host}/api/notes/deletenote/${id}`, {
       method: "DELETE", // *GET, POST, PUT, DELETE, etc.
 
       headers: {
@@ -62,7 +62,7 @@ const NoteState = (props) => {
   const editNote = async (id, title, description, tag) => {
     //api call
 
-    const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+    await fetch(`${host}/api/notes/updatenote/${id}`, {
       method: "PUT", // *GET, POST, PUT, DELETE, etc.
 
       headers: {
