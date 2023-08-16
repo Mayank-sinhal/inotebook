@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useRef } from "react";
 import AboutContext from "../context/about/AboutContext";
+import themeContext from "../context/theme/themeContext";
 
 const About = () => {
   const ref = useRef(null);
   const context = useContext(AboutContext);
-
+  const { isDarkTheme } = useContext(themeContext);
   const { name, email } = context.credentials;
   const handleclick = () => {
     ref.current.click();
@@ -14,6 +15,7 @@ const About = () => {
     const name = localStorage.getItem("name");
     const email = localStorage.getItem("email");
     context.setCredentials({ name, email });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
@@ -24,7 +26,9 @@ const About = () => {
               <img
                 src="https://picsum.photos/id/237/250/250"
                 alt="Profile"
-                className="profile-image img-fluid rounded-circle border border-dark p-1"
+                className={`profile-image img-fluid rounded-circle border border-${
+                  isDarkTheme ? "light" : "dark"
+                } p-2`}
               />
             </div>
           </div>
@@ -50,9 +54,24 @@ const About = () => {
         </div>
       </div>
       <div className="container mt-6rem" style={{ marginTop: 4.5 + "rem" }}>
-        <div className="nav bg-light d-flex justify-content-between align-items-center">
-          <h2 className="mb-0">Your Uploads</h2>
-          <button className="btn btn-dark" onClick={handleclick}>
+        <div
+          className={`navbar bg-${
+            isDarkTheme ? "dark" : "light"
+          } d-flex justify-content-between align-items-center `}
+        >
+          <h2
+            className="mb-0 "
+            style={{
+              color: `${isDarkTheme ? "white" : "black"}`,
+              marginLeft: "2rem",
+            }}
+          >
+            Your Uploads
+          </h2>
+          <button
+            className={`btn btn-${isDarkTheme ? "light" : "dark"} mx-3`}
+            onClick={handleclick}
+          >
             Upload New File
           </button>
         </div>

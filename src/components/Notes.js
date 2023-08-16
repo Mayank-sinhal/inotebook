@@ -3,7 +3,9 @@ import Notecontext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 import { useNavigate } from "react-router-dom";
+import themeContext from "../context/theme/themeContext";
 const Notes = (props) => {
+  const { isDarkTheme } = useContext(themeContext);
   const navigate = useNavigate();
   const context = useContext(Notecontext);
   const { notes, getnotes, editNote } = context;
@@ -62,9 +64,13 @@ const Notes = (props) => {
         id="exampleModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
+        data-bs-theme={`${isDarkTheme ? "dark" : "light"}`}
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div
+          className="modal-dialog"
+          data-bs-theme={`${isDarkTheme ? "dark" : "light"}`}
+        >
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
