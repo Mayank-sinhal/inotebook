@@ -22,31 +22,45 @@ const Signup = (props) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/auth/createuser", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+    if (credentials.password === credentials.cpassword) {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/createuser",
+        {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: credentials.name,
+            email: credentials.email,
+            password: credentials.password,
+            about: credentials.about,
+          }),
+        }
+      );
+      const json = await response.json();
+      if (json.success) {
+        localStorage.setItem("token", json.authtoken);
+        props.showAlert("Scuccessfully Created your account", "success");
+        navigate("/");
+      } else {
+        props.showAlert("Invalid credentials", "danger");
+      }
+      console.log(json);
+    } else {
+      props.showAlert("Password doesnot Match", "danger");
+      setCredentials({
         name: credentials.name,
         email: credentials.email,
-        password: credentials.password,
+        password: "",
+        cpassword: "",
         about: credentials.about,
-      }),
-    });
-    const json = await response.json();
-    if (json.success) {
-      localStorage.setItem("token", json.authtoken);
-      props.showAlert("Scuccessfully Created your account", "success");
-      navigate("/");
-    } else {
-      props.showAlert("Invalid credentials", "danger");
+      });
     }
-    console.log(json);
   };
   return (
-    <div className="container">
+    <div className="container my-2">
       <h1>Signup to use iNotebook</h1>
       <form onSubmit={handlesubmit} className="my-4">
         <div className="mb-3">
