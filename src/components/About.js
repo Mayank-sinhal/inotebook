@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
+
 import AboutContext from "../context/about/AboutContext";
 import themeContext from "../context/theme/themeContext";
 
@@ -6,17 +7,41 @@ const About = () => {
   const ref = useRef(null);
   const context = useContext(AboutContext);
   const { isDarkTheme } = useContext(themeContext);
-  const { name, email } = context.credentials;
+  const { name, email, about } = context.credentials;
   const handleclick = () => {
     ref.current.click();
   };
 
   useEffect(() => {
-    const name = localStorage.getItem("name");
-    const email = localStorage.getItem("email");
-    context.setCredentials({ name, email });
+    const fetchdata = async () => {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+
+        headers: {
+          "auth-token": token,
+        },
+      });
+      const json = await response.json();
+      if (json.success) {
+        // localStorage.setItem("about", json.user.about);
+        // localStorage.setItem("name", json.user.name);
+        // localStorage.setItem("email", json.user.email);
+        // const name = localStorage.getItem("name");
+        // const email = localStorage.getItem("email");
+        // const about = localStorage.getItem("about");
+        context.setCredentials({
+          name: json.user.name,
+          email: json.user.email,
+          about: json.user.about,
+        });
+      }
+    };
+    fetchdata();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <div className="container">
@@ -35,14 +60,7 @@ const About = () => {
           <div className="col-md-6 d-flex  justify-content-center my-3">
             <div className=" d-flex flex-column align-items-center justify-content-center about-details">
               <h2>About Me</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                tristique est vitae nisl posuere, sit amet tempor nulla
-                hendrerit. Lorem, ipsum dolor sit amet consectetur adipisicing
-                elit. Voluptatibus, dolore. Eveniet itaque ratione libero autem
-                vel voluptatem fuga ipsam dolorum, amet ut aspernatur placeat,
-                totam ad rerum facilis nam. Voluptatum.
-              </p>
+              <p>{about}</p>
               <p className="mb-0">
                 <strong>Name:</strong> {name}
               </p>
@@ -94,6 +112,7 @@ const About = () => {
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
+        data-bs-theme={`${isDarkTheme ? "dark" : "light"}`}
       >
         <div className="modal-dialog">
           <div className="modal-content">

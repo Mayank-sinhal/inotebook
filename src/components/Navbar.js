@@ -8,7 +8,7 @@ const Navbar = () => {
   const { toggleTheme, isDarkTheme } = useContext(themeContext);
 
   const handleclick = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/login");
   };
   useEffect(() => {
