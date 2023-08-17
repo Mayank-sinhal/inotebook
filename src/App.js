@@ -8,6 +8,8 @@ import NoteState from "./context/notes/NoteState";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Alert from "./components/Alert";
+import AboutState from "./context/about/AboutState";
+import ThemeState from "./context/theme/AboutState";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -25,24 +27,32 @@ function App() {
     <>
       {/* how this notestate working here */}
       <NoteState>
-        <Router>
-          <Navbar />
-          <Alert alert={alert} />
-          <Routes>
-            <Route exact path="/" element={<Home showAlert={showAlert} />} />
-            <Route exact path="/about" element={<About />} />
-            <Route
-              exact
-              path="/login"
-              element={<Login showAlert={showAlert} />}
-            />
-            <Route
-              exact
-              path="/signup"
-              element={<Signup showAlert={showAlert} />}
-            />
-          </Routes>
-        </Router>
+        <AboutState>
+          <ThemeState>
+            <Router>
+              <Navbar />
+              <Alert alert={alert} />
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={<Home showAlert={showAlert} />}
+                />
+                <Route exact path="/about" element={<About />} />
+                <Route
+                  exact
+                  path="/login"
+                  element={<Login showAlert={showAlert} />}
+                />
+                <Route
+                  exact
+                  path="/signup"
+                  element={<Signup showAlert={showAlert} />}
+                />
+              </Routes>
+            </Router>
+          </ThemeState>
+        </AboutState>
       </NoteState>
     </>
   );

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import themeContext from "../context/theme/themeContext";
 
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({
@@ -7,11 +8,13 @@ const Signup = (props) => {
     email: "",
     password: "",
     cpassword: "",
+    about: "",
   });
 
   //use history hook
 
   let navigate = useNavigate();
+  const { isDarkTheme } = useContext(themeContext);
 
   const onchange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -29,6 +32,7 @@ const Signup = (props) => {
         name: credentials.name,
         email: credentials.email,
         password: credentials.password,
+        about: credentials.about,
       }),
     });
     const json = await response.json();
@@ -73,8 +77,25 @@ const Signup = (props) => {
             onChange={onchange}
           />
           <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
+            <p style={{ color: `${isDarkTheme ? "white" : "black"}` }}>
+              We'll never share your email with anyone else.
+            </p>
           </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="about" className="form-label">
+            About
+          </label>
+          <input
+            onChange={onchange}
+            type="text"
+            value={credentials.about}
+            name="about"
+            className="form-control"
+            id="about"
+            required
+            minLength={5}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
