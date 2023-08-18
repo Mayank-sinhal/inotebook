@@ -45,9 +45,9 @@ const About = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container ">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 d-flex justify-content-center">
             <div
               className="d-flex justify-content-center  "
               style={{ height: "15rem", maxWidth: "15rem" }}
@@ -75,11 +75,17 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className="container mt-6rem" style={{ marginTop: 4.5 + "rem" }}>
+      <div
+        className="container "
+        style={{
+          marginTop: 4.5 + "rem",
+          backgroundColor: "#FAF0E6",
+          padding: "0",
+        }}
+      >
         <div
-          className={`navbar bg-${
-            isDarkTheme ? "dark" : "light"
-          } d-flex justify-content-between align-items-center `}
+          className={`navbar bg-${isDarkTheme ? "dark" : "light"} `}
+          style={{ width: "100%" }}
         >
           <h2
             className="mb-0 "
@@ -96,6 +102,18 @@ const About = () => {
           >
             Upload New File
           </button>
+        </div>
+        <div className="container my-2" style={{ paddingBottom: "12px" }}>
+          <ul
+            className="list-group"
+            data-bs-theme={`${isDarkTheme ? "dark" : "light"}`}
+          >
+            <li className="list-group-item">An item</li>
+            <li className="list-group-item">A second item</li>
+            <li className="list-group-item">A third item</li>
+            <li className="list-group-item">A fourth item</li>
+            <li className="list-group-item">And a fifth one</li>
+          </ul>
         </div>
       </div>
       {/* <!-- Button trigger modal --> */}
