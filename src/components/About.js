@@ -35,6 +35,7 @@ const About = () => {
           email: json.user.email,
           about: json.user.about,
         });
+        context.setAboutImage(json.user.image);
       }
     };
     fetchdata();
@@ -47,9 +48,12 @@ const About = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6">
-            <div className="d-flex justify-content-center max ">
+            <div
+              className="d-flex justify-content-center  "
+              style={{ height: "15rem", maxWidth: "15rem" }}
+            >
               <img
-                src="https://picsum.photos/id/237/250/250"
+                src={context.aboutImage}
                 alt="Profile"
                 className={`profile-image img-fluid rounded-circle border border-${
                   isDarkTheme ? "light" : "dark"
@@ -57,7 +61,7 @@ const About = () => {
               />
             </div>
           </div>
-          <div className="col-md-6 d-flex  justify-content-center my-3">
+          <div className="col-md-6 d-flex  my-3">
             <div className=" d-flex flex-column align-items-center justify-content-center about-details">
               <h2>About Me</h2>
               <p>{about}</p>

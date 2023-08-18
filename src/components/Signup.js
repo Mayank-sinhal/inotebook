@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import themeContext from "../context/theme/themeContext";
+import AboutContext from "../context/about/AboutContext";
 
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({
@@ -15,9 +16,26 @@ const Signup = (props) => {
 
   let navigate = useNavigate();
   const { isDarkTheme } = useContext(themeContext);
+  const { setAboutImage, aboutImage } = useContext(AboutContext);
 
   const onchange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const onimageupload = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        setAboutImage(reader.result);
+      };
+
+      reader.onerror = (error) => {
+        console.log("error: ", error);
+      };
+    }
   };
 
   const handlesubmit = async (e) => {
@@ -36,6 +54,7 @@ const Signup = (props) => {
             email: credentials.email,
             password: credentials.password,
             about: credentials.about,
+            image: aboutImage,
           }),
         }
       );
@@ -47,7 +66,6 @@ const Signup = (props) => {
       } else {
         props.showAlert("Invalid credentials", "danger");
       }
-      console.log(json);
     } else {
       props.showAlert("Password doesnot Match", "danger");
       setCredentials({
@@ -60,16 +78,16 @@ const Signup = (props) => {
     }
   };
   return (
-    <div className="container my-2">
+    <div className="container container-sm">
       <h1>Signup to use iNotebook</h1>
-      <form onSubmit={handlesubmit} className="my-4">
+      <form onSubmit={handlesubmit} className="my-3 form-control-sm ">
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control form-control-sm "
             id="name"
             name="name"
             value={credentials.name}
@@ -83,7 +101,7 @@ const Signup = (props) => {
           </label>
           <input
             type="email"
-            className="form-control"
+            className="form-control form-control-sm"
             id="email"
             name="email"
             value={credentials.email}
@@ -105,10 +123,25 @@ const Signup = (props) => {
             type="text"
             value={credentials.about}
             name="about"
-            className="form-control"
+            className="form-control form-control-sm"
             id="about"
             required
             minLength={5}
+          />
+        </div>
+        <div className=" mb-3">
+          <label htmlFor="image" className="form-label">
+            Upload Profile
+          </label>
+          <input
+            type="file"
+            className="form-control form-control-sm"
+            id="image"
+            name="image"
+            accept="image/*"
+            aria-describedby="inputGroupFileAddon04"
+            aria-label="Upload"
+            onChange={onimageupload}
           />
         </div>
         <div className="mb-3">
@@ -120,7 +153,7 @@ const Signup = (props) => {
             type="password"
             value={credentials.password}
             name="password"
-            className="form-control"
+            className="form-control form-control-sm"
             id="password"
             required
             minLength={5}
@@ -135,14 +168,14 @@ const Signup = (props) => {
             type="password"
             value={credentials.cpassword}
             name="cpassword"
-            className="form-control"
+            className="form-control form-control-sm"
             required
             minLength={5}
             id="cpassword"
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary ">
           Register
         </button>
       </form>

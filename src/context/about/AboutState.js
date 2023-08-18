@@ -7,9 +7,13 @@ const AboutState = (props) => {
     email: "",
     about: "",
   });
+
+  const [aboutImage, setAboutImage] = useState(null);
   return (
     <>
-      <AboutContext.Provider value={{ credentials, setCredentials }}>
+      <AboutContext.Provider
+        value={{ credentials, setCredentials, aboutImage, setAboutImage }}
+      >
         {props.children}
       </AboutContext.Provider>
     </>
