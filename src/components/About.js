@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "./LoadingSpinner";
 
 import AboutContext from "../context/about/AboutContext";
 import themeContext from "../context/theme/themeContext";
 
 const About = (props) => {
+  const [loading, setLoading] = useState(false);
   const ref = useRef(null);
   const refc = useRef(null);
   const fileInputRef = useRef(null);
@@ -28,6 +30,7 @@ const About = (props) => {
 
   const handleUpload = async () => {
     if (!context.file) return;
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", context.file);
     refc.current.click();
@@ -44,6 +47,7 @@ const About = (props) => {
       );
 
       if (response.status === 200) {
+        setLoading(false);
         context.setAllFile(context.Allfile.concat(response.data));
         props.showAlert("File uploaded Scuccessfully ", "success");
       }
@@ -57,6 +61,7 @@ const About = (props) => {
 
   useEffect(() => {
     const fetchdata = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:5000/api/auth/getuser", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -67,6 +72,7 @@ const About = (props) => {
       });
       const json = await response.json();
       if (json.success) {
+        setLoading(false);
         // localStorage.setItem("about", json.user.about);
         // localStorage.setItem("name", json.user.name);
         // localStorage.setItem("email", json.user.email);
@@ -92,30 +98,38 @@ const About = (props) => {
       <div className="container ">
         <div className="row">
           <div className="col-md-6 d-flex justify-content-center">
-            <div
-              className="d-flex justify-content-center  "
-              style={{ height: "15rem", maxWidth: "15rem" }}
-            >
-              <img
-                src={context.aboutImage}
-                alt="Profile"
-                className={`profile-image img-fluid rounded-circle border border-${
-                  isDarkTheme ? "light" : "dark"
-                } p-2`}
-              />
-            </div>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <div
+                className="d-flex justify-content-center  "
+                style={{ height: "15rem", maxWidth: "15rem" }}
+              >
+                <img
+                  src={context.aboutImage}
+                  alt="Profile"
+                  className={`profile-image img-fluid rounded-circle border border-${
+                    isDarkTheme ? "light" : "dark"
+                  } p-2`}
+                />
+              </div>
+            )}
           </div>
-          <div className="col-md-6 d-flex  my-3">
-            <div className=" d-flex flex-column align-items-center justify-content-center about-details">
-              <h2>About Me</h2>
-              <p>{about}</p>
-              <p className="mb-0">
-                <strong>Name:</strong> {name}
-              </p>
-              <p className="mb-0">
-                <strong>Email:</strong> {email}
-              </p>
-            </div>
+          <div className="col-md-6 d-flex justify-content-cente my-3">
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className=" d-flex flex-column align-items-center justify-content-center about-details">
+                <h2>About Me</h2>
+                <p>{about}</p>
+                <p className="mb-0">
+                  <strong>Name:</strong> {name}
+                </p>
+                <p className="mb-0">
+                  <strong>Email:</strong> {email}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
