@@ -66,7 +66,7 @@ const Navbar = () => {
               ) : null}
             </ul>
             <div className="d-flex justify-content-between">
-              <div className="px-1">
+              <div className="px-1 ">
                 <svg
                   onClick={toggleTheme}
                   stroke="currentColor"
@@ -97,7 +97,11 @@ const Navbar = () => {
                   </Link>
                 </form>
               ) : (
-                <button className="btn btn-primary" onClick={handleclick}>
+                <button
+                  className="btn btn-primary"
+                  style={{ marginLeft: "1rem" }}
+                  onClick={handleclick}
+                >
                   Logout
                 </button>
               )}
