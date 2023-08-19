@@ -7,15 +7,11 @@ const AboutState = (props) => {
     email: "",
     about: "",
   });
-
   const [aboutImage, setAboutImage] = useState(null);
   const [file, setFile] = useState(null);
   const [Allfile, setAllFile] = useState([]);
 
   const host = "http://localhost:5000";
-  const notesInitial = [];
-
-  const [notes, setNotes] = useState(notesInitial);
   //get all notes
   const getfiles = async () => {
     const response = await fetch(`${host}/api/files/fetchallfiles`, {
