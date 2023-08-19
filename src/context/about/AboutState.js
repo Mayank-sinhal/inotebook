@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import AboutContext from "./AboutContext";
 
 const AboutState = (props) => {
@@ -7,6 +7,8 @@ const AboutState = (props) => {
     email: "",
     about: "",
   });
+
+  const refm = useRef(null);
   const [aboutImage, setAboutImage] = useState(null);
   const [file, setFile] = useState(null);
   const [Allfile, setAllFile] = useState([]);
@@ -61,6 +63,7 @@ const AboutState = (props) => {
           setAllFile,
           getfiles,
           deletefile,
+          refm,
         }}
       >
         {props.children}

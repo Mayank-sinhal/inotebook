@@ -4,8 +4,11 @@ import LoadingSpinner from "./LoadingSpinner";
 
 import AboutContext from "../context/about/AboutContext";
 import themeContext from "../context/theme/themeContext";
+import ImageModal from "./ImageModal";
 
 const About = (props) => {
+  const [title, setTitle] = useState("");
+  const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
   const ref = useRef(null);
   const refc = useRef(null);
@@ -17,7 +20,11 @@ const About = (props) => {
     ref.current.click();
   };
 
-  const handleview = () => {};
+  const handleview = (file) => {
+    context.refm.current.click();
+    setTitle(file.originalname);
+    setImg(file.filename);
+  };
 
   const handleimageupload = (e) => {
     context.setFile(e.target.files[0]);
@@ -30,7 +37,7 @@ const About = (props) => {
 
   const handleUpload = async () => {
     if (!context.file) return;
-    setLoading(true);
+
     const formData = new FormData();
     formData.append("file", context.file);
     refc.current.click();
@@ -47,7 +54,6 @@ const About = (props) => {
       );
 
       if (response.status === 200) {
-        setLoading(false);
         context.setAllFile(context.Allfile.concat(response.data));
         props.showAlert("File uploaded Scuccessfully ", "success");
       }
@@ -96,6 +102,7 @@ const About = (props) => {
   return (
     <>
       <div className="container ">
+        <ImageModal title={title} img={img} />
         <div className="row">
           <div className="col-md-6 d-flex justify-content-center">
             {loading ? (
@@ -178,7 +185,9 @@ const About = (props) => {
                   <div>
                     <i
                       className="fa-regular fa-eye mx-2"
-                      onClick={handleview}
+                      onClick={() => {
+                        handleview(item);
+                      }}
                     ></i>
                     <i
                       className="fa-solid fa-trash mx-2"
