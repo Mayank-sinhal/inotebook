@@ -1,15 +1,58 @@
 import React, { useContext, useEffect, useRef } from "react";
+import axios from "axios";
 
 import AboutContext from "../context/about/AboutContext";
 import themeContext from "../context/theme/themeContext";
 
-const About = () => {
+const About = (props) => {
   const ref = useRef(null);
+  const refc = useRef(null);
+  const fileInputRef = useRef(null);
   const context = useContext(AboutContext);
   const { isDarkTheme } = useContext(themeContext);
   const { name, email, about } = context.credentials;
   const handleclick = () => {
     ref.current.click();
+  };
+
+  const handleview = () => {};
+
+  const handleimageupload = (e) => {
+    context.setFile(e.target.files[0]);
+  };
+
+  const handledelete = (id) => {
+    context.deletefile(id);
+    props.showAlert("successfully deleted note", "success");
+  };
+
+  const handleUpload = async () => {
+    if (!context.file) return;
+    const formData = new FormData();
+    formData.append("file", context.file);
+    refc.current.click();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/files/addfile",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        context.setAllFile(context.Allfile.concat(response.data));
+        props.showAlert("File uploaded Scuccessfully ", "success");
+      }
+    } catch (error) {
+      props.showAlert("Error uploading file ", "danger");
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset input value to clear selection
+    }
   };
 
   useEffect(() => {
@@ -39,6 +82,7 @@ const About = () => {
       }
     };
     fetchdata();
+    context.getfiles();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -100,7 +144,7 @@ const About = () => {
             className={`btn btn-${isDarkTheme ? "light" : "dark"} mx-3`}
             onClick={handleclick}
           >
-            Upload New File
+            Upload New Image
           </button>
         </div>
         <div className="container my-2" style={{ paddingBottom: "12px" }}>
@@ -108,11 +152,30 @@ const About = () => {
             className="list-group"
             data-bs-theme={`${isDarkTheme ? "dark" : "light"}`}
           >
-            <li className="list-group-item">An item</li>
-            <li className="list-group-item">A second item</li>
-            <li className="list-group-item">A third item</li>
-            <li className="list-group-item">A fourth item</li>
-            <li className="list-group-item">And a fifth one</li>
+            {context.Allfile.map((item, index) => {
+              return (
+                <li
+                  className="list-group-item d-flex justify-content-between"
+                  key={item._id}
+                >
+                  <div>
+                    {index + 1} {item.originalname}
+                  </div>
+                  <div>
+                    <i
+                      className="fa-regular fa-eye mx-2"
+                      onClick={handleview}
+                    ></i>
+                    <i
+                      className="fa-solid fa-trash mx-2"
+                      onClick={() => {
+                        handledelete(item._id);
+                      }}
+                    ></i>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -140,7 +203,7 @@ const About = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                Modal title
+                Upload File
               </h5>
               <button
                 type="button"
@@ -157,6 +220,8 @@ const About = () => {
                   id="inputGroupFile04"
                   aria-describedby="inputGroupFileAddon04"
                   aria-label="Upload"
+                  onChange={handleimageupload}
+                  ref={fileInputRef}
                 />
               </div>
             </div>
@@ -165,10 +230,15 @@ const About = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                ref={refc}
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary "
+                onClick={handleUpload}
+              >
                 Upload
               </button>
             </div>
