@@ -7,7 +7,7 @@ import themeContext from "../context/theme/themeContext";
 import ImageModal from "./ImageModal";
 
 const About = (props) => {
-  const host = process.env.HOST;
+  const host = process.env.REACT_APP_HOST_STRING;
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
