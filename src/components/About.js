@@ -7,6 +7,7 @@ import themeContext from "../context/theme/themeContext";
 import ImageModal from "./ImageModal";
 
 const About = (props) => {
+  const host = process.env.HOST;
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,16 +43,12 @@ const About = (props) => {
     formData.append("file", context.file);
     refc.current.click();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/files/addfile",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.post(`${host}/api/files/addfile`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       if (response.status === 200) {
         context.setAllFile(context.Allfile.concat(response.data));
@@ -69,7 +66,7 @@ const About = (props) => {
     const fetchdata = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/auth/getuser", {
+      const response = await fetch(`${host}/api/auth/getuser`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
 
         headers: {

@@ -12,7 +12,7 @@ const Signup = (props) => {
     about: "",
   });
 
-  //use history hook
+  const host = process.env.HOST;
 
   let navigate = useNavigate();
   const { isDarkTheme } = useContext(themeContext);
@@ -41,23 +41,20 @@ const Signup = (props) => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     if (credentials.password === credentials.cpassword) {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/createuser",
-        {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+      const response = await fetch(`${host}/api/auth/createuser`, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password,
-            about: credentials.about,
-            image: aboutImage,
-          }),
-        }
-      );
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+          about: credentials.about,
+          image: aboutImage,
+        }),
+      });
       const json = await response.json();
       if (json.success) {
         localStorage.setItem("token", json.authtoken);
