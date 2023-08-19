@@ -12,12 +12,10 @@ const Signup = (props) => {
     about: "",
   });
 
-  const host = process.env.HOST;
-
+  const host = process.env.REACT_APP_HOST_STRING;
   let navigate = useNavigate();
   const { isDarkTheme } = useContext(themeContext);
   const { setAboutImage, aboutImage } = useContext(AboutContext);
-
   const onchange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };

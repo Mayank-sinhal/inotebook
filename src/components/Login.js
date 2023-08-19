@@ -10,7 +10,7 @@ const Login = (props) => {
   const onchange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  const host = process.env.HOST;
+  const host = process.env.REACT_APP_HOST_STRING;
 
   const handlesubmit = async (e) => {
     e.preventDefault();

@@ -13,7 +13,7 @@ const AboutState = (props) => {
   const [file, setFile] = useState(null);
   const [Allfile, setAllFile] = useState([]);
 
-  const host = process.env.HOST;
+  const host = process.env.HOST_STRING;
   //get all notes
   const getfiles = async () => {
     const response = await fetch(`${host}/api/files/fetchallfiles`, {
