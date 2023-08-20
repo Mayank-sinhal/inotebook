@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import AboutContext from "./AboutContext";
-
+import { REACT_APP_HOST_STRING } from "../../helper.js";
 const AboutState = (props) => {
   const [credentials, setCredentials] = useState({
     name: "",
@@ -16,7 +16,7 @@ const AboutState = (props) => {
   //get all notes
   const getfiles = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_HOST_STRING}/api/files/fetchallfiles`,
+      `${REACT_APP_HOST_STRING}/api/files/fetchallfiles`,
       {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
 
@@ -35,17 +35,14 @@ const AboutState = (props) => {
   //delete a file
 
   const deletefile = async (id) => {
-    await fetch(
-      `${process.env.REACT_APP_HOST_STRING}/api/files/deletefile/${id}`,
-      {
-        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+    await fetch(`${REACT_APP_HOST_STRING}/api/files/deletefile/${id}`, {
+      method: "DELETE", // *GET, POST, PUT, DELETE, etc.
 
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
-        },
-      }
-    );
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
     // const json = await response.json();
     // console.log(json + "from delete");
     // console.log(id);

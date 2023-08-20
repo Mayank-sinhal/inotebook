@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import themeContext from "../context/theme/themeContext";
-
+import { REACT_APP_HOST_STRING } from "../helper";
 const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const { isDarkTheme } = useContext(themeContext);
@@ -13,20 +13,17 @@ const Login = (props) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      `${process.env.REACT_APP_HOST_STRING}/api/auth/login`,
-      {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch(`${REACT_APP_HOST_STRING}/api/auth/login`, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      }
-    );
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
     const json = await response.json();
     if (json.success) {
       //save the auth token and redirect

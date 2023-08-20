@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
-
+import { REACT_APP_HOST_STRING } from "../helper";
 import AboutContext from "../context/about/AboutContext";
 import themeContext from "../context/theme/themeContext";
 import ImageModal from "./ImageModal";
@@ -43,7 +43,7 @@ const About = (props) => {
     refc.current.click();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_HOST_STRING}/api/files/addfile`,
+        `${REACT_APP_HOST_STRING}/api/files/addfile`,
         formData,
         {
           headers: {
@@ -70,7 +70,7 @@ const About = (props) => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.REACT_APP_HOST_STRING}/api/auth/getuser`,
+        `${REACT_APP_HOST_STRING}/api/auth/getuser`,
         {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
 

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import themeContext from "../context/theme/themeContext";
 import AboutContext from "../context/about/AboutContext";
-
+import { REACT_APP_HOST_STRING } from "../helper.js";
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     name: "",
@@ -40,7 +40,7 @@ const Signup = (props) => {
     if (credentials.password === credentials.cpassword) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_HOST_STRING}/api/auth/createuser`,
+          `${REACT_APP_HOST_STRING}/api/auth/createuser`,
           {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
 
