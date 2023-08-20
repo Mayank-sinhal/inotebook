@@ -38,30 +38,35 @@ const Signup = (props) => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     if (credentials.password === credentials.cpassword) {
-      const response = await fetch(
-        `${process.env.REACT_APP_HOST_STRING}/api/auth/createuser`,
-        {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_HOST_STRING}/api/auth/createuser`,
+          {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password,
-            about: credentials.about,
-            image: aboutImage,
-          }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: credentials.name,
+              email: credentials.email,
+              password: credentials.password,
+              about: credentials.about,
+              image: aboutImage,
+            }),
+          }
+        );
+        const json = await response.json();
+        if (json.success) {
+          localStorage.setItem("token", json.authtoken);
+          props.showAlert("Scuccessfully Created your account", "success");
+          navigate("/");
+        } else {
+          props.showAlert("Invalid credentials", "danger");
         }
-      );
-      const json = await response.json();
-      if (json.success) {
-        localStorage.setItem("token", json.authtoken);
-        props.showAlert("Scuccessfully Created your account", "success");
-        navigate("/");
-      } else {
-        props.showAlert("Invalid credentials", "danger");
+      } catch (error) {
+        console.log("api error", error);
+        props.showAlert("Api Error", "danger");
       }
     } else {
       props.showAlert("Password doesnot Match", "danger");

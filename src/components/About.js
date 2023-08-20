@@ -107,7 +107,12 @@ const About = (props) => {
             ) : (
               <div
                 className="d-flex justify-content-center  "
-                style={{ height: "15rem", maxWidth: "15rem" }}
+                style={{
+                  width: "15rem",
+                  height: "15rem",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                }}
               >
                 <img
                   src={context.aboutImage}
@@ -115,6 +120,7 @@ const About = (props) => {
                   className={`profile-image img-fluid rounded-circle border border-${
                     isDarkTheme ? "light" : "dark"
                   } p-2`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             )}
