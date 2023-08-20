@@ -10,21 +10,23 @@ const Login = (props) => {
   const onchange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  const host = process.env.REACT_APP_HOST_STRING;
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${host}/api/auth/login`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch(
+      `${process.env.REACT_APP_HOST_STRING}/api/auth/login`,
+      {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: credentials.email,
-        password: credentials.password,
-      }),
-    });
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      }
+    );
     const json = await response.json();
     if (json.success) {
       //save the auth token and redirect

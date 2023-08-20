@@ -9,7 +9,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Alert from "./components/Alert";
 import AboutState from "./context/about/AboutState";
-import ThemeState from "./context/theme/AboutState";
+import ThemeState from "./context/theme/ThemeState";
 
 function App() {
   const [alert, setAlert] = useState(null);

@@ -12,7 +12,6 @@ const Signup = (props) => {
     about: "",
   });
 
-  const host = process.env.REACT_APP_HOST_STRING;
   let navigate = useNavigate();
   const { isDarkTheme } = useContext(themeContext);
   const { setAboutImage, aboutImage } = useContext(AboutContext);
@@ -39,20 +38,23 @@ const Signup = (props) => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     if (credentials.password === credentials.cpassword) {
-      const response = await fetch(`${host}/api/auth/createuser`, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST_STRING}/api/auth/createuser`,
+        {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: credentials.name,
-          email: credentials.email,
-          password: credentials.password,
-          about: credentials.about,
-          image: aboutImage,
-        }),
-      });
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: credentials.name,
+            email: credentials.email,
+            password: credentials.password,
+            about: credentials.about,
+            image: aboutImage,
+          }),
+        }
+      );
       const json = await response.json();
       if (json.success) {
         localStorage.setItem("token", json.authtoken);

@@ -7,7 +7,6 @@ import themeContext from "../context/theme/themeContext";
 import ImageModal from "./ImageModal";
 
 const About = (props) => {
-  const host = process.env.REACT_APP_HOST_STRING;
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,12 +42,16 @@ const About = (props) => {
     formData.append("file", context.file);
     refc.current.click();
     try {
-      const response = await axios.post(`${host}/api/files/addfile`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_HOST_STRING}/api/files/addfile`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      );
 
       if (response.status === 200) {
         context.setAllFile(context.Allfile.concat(response.data));
@@ -66,22 +69,19 @@ const About = (props) => {
     const fetchdata = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`${host}/api/auth/getuser`, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST_STRING}/api/auth/getuser`,
+        {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
 
-        headers: {
-          "auth-token": token,
-        },
-      });
+          headers: {
+            "auth-token": token,
+          },
+        }
+      );
       const json = await response.json();
       if (json.success) {
         setLoading(false);
-        // localStorage.setItem("about", json.user.about);
-        // localStorage.setItem("name", json.user.name);
-        // localStorage.setItem("email", json.user.email);
-        // const name = localStorage.getItem("name");
-        // const email = localStorage.getItem("email");
-        // const about = localStorage.getItem("about");
         context.setCredentials({
           name: json.user.name,
           email: json.user.email,

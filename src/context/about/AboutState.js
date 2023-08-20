@@ -13,18 +13,21 @@ const AboutState = (props) => {
   const [file, setFile] = useState(null);
   const [Allfile, setAllFile] = useState([]);
 
-  const host = process.env.HOST_STRING;
   //get all notes
   const getfiles = async () => {
-    const response = await fetch(`${host}/api/files/fetchallfiles`, {
-      method: "GET", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch(
+      `${process.env.REACT_APP_HOST_STRING}/api/files/fetchallfiles`,
+      {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
 
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-    });
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      }
+    );
     const json = await response.json();
+    // console.log(response);
     // console.log(json);
     setAllFile(json);
   };
@@ -32,14 +35,17 @@ const AboutState = (props) => {
   //delete a file
 
   const deletefile = async (id) => {
-    await fetch(`${host}/api/files/deletefile/${id}`, {
-      method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+    await fetch(
+      `${process.env.REACT_APP_HOST_STRING}/api/files/deletefile/${id}`,
+      {
+        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
 
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-    });
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      }
+    );
     // const json = await response.json();
     // console.log(json + "from delete");
     // console.log(id);
