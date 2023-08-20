@@ -179,13 +179,27 @@ const About = (props) => {
             {context.Allfile.map((item, index) => {
               return (
                 <li
-                  className="list-group-item d-flex justify-content-between"
+                  className="list-group-item d-flex justify-content-between flex-wrap"
                   key={item._id}
                 >
-                  <div>
-                    {index + 1} {item.originalname}
+                  <div className="flex-grow-1">
+                    {" "}
+                    {/* Use flex-grow-1 to make the first div take available width */}
+                    <span className="d-inline-block d-md-none">
+                      {" "}
+                      {/* Show only on screens smaller than medium */}
+                      {index + 1}
+                    </span>
+                    <span
+                      className="d-inline-block"
+                      style={{ maxWidth: "100%" }}
+                    >
+                      {item.originalname}
+                    </span>
                   </div>
-                  <div>
+                  <div className="d-flex flex-wrap align-items-center">
+                    {" "}
+                    {/* Wrap the icons in a flex container */}
                     <i
                       className="fa-regular fa-eye mx-2"
                       onClick={() => {
