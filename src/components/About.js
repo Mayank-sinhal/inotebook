@@ -102,7 +102,7 @@ const About = (props) => {
         <ImageModal title={title} img={img} />
         <div className="row">
           <div className="col-md-6 d-flex justify-content-center">
-            {loading ? (
+            {loading && !context.aboutImage ? (
               <LoadingSpinner />
             ) : (
               <div
@@ -126,7 +126,7 @@ const About = (props) => {
             )}
           </div>
           <div className="col-md-6 d-flex justify-content-cente my-3">
-            {loading ? (
+            {loading && !about ? (
               <LoadingSpinner />
             ) : (
               <div className=" d-flex flex-column align-items-center justify-content-center about-details">
