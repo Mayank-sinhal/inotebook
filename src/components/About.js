@@ -61,6 +61,8 @@ const About = (props) => {
         props.showAlert("File uploaded Scuccessfully ", "success");
       }
     } catch (error) {
+      setIsLoading(false);
+      refc.current.click();
       props.showAlert("Error uploading file ", "danger");
     }
     if (fileInputRef.current) {
