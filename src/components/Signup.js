@@ -12,6 +12,7 @@ const Signup = (props) => {
     about: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
   const { isDarkTheme } = useContext(themeContext);
   const { setAboutImage, aboutImage } = useContext(AboutContext);
@@ -39,6 +40,7 @@ const Signup = (props) => {
     e.preventDefault();
     if (credentials.password === credentials.cpassword) {
       try {
+        setIsLoading(true);
         const response = await fetch(
           `${REACT_APP_HOST_STRING}/api/auth/createuser`,
           {
@@ -56,6 +58,7 @@ const Signup = (props) => {
             }),
           }
         );
+        setIsLoading(false);
         const json = await response.json();
         if (json.success) {
           localStorage.setItem("token", json.authtoken);
@@ -178,7 +181,7 @@ const Signup = (props) => {
         </div>
 
         <button type="submit" className="btn btn-primary ">
-          Register
+          {isLoading ? "Registering..." : "Register"}
         </button>
       </form>
     </div>

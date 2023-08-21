@@ -10,6 +10,7 @@ const About = (props) => {
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const ref = useRef(null);
   const refc = useRef(null);
   const fileInputRef = useRef(null);
@@ -40,8 +41,9 @@ const About = (props) => {
 
     const formData = new FormData();
     formData.append("file", context.file);
-    refc.current.click();
+
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${REACT_APP_HOST_STRING}/api/files/addfile`,
         formData,
@@ -52,7 +54,8 @@ const About = (props) => {
           },
         }
       );
-
+      setIsLoading(false);
+      refc.current.click();
       if (response.status === 200) {
         context.setAllFile(context.Allfile.concat(response.data));
         props.showAlert("File uploaded Scuccessfully ", "success");
@@ -279,7 +282,7 @@ const About = (props) => {
                 className="btn btn-primary "
                 onClick={handleUpload}
               >
-                Upload
+                {isLoading ? "Uploading..." : "Upload"}
               </button>
             </div>
           </div>
