@@ -14,7 +14,7 @@ const Login = (props) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    setLoading(false);
+    setLoading(true);
     const response = await fetch(`${REACT_APP_HOST_STRING}/api/auth/login`, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
 
@@ -28,7 +28,7 @@ const Login = (props) => {
     });
     const json = await response.json();
     if (json.success) {
-      setLoading(true);
+      setLoading(false);
       //save the auth token and redirect
       localStorage.setItem("token", json.authtoken);
       // localStorage.setItem("name", json.name);
