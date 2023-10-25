@@ -37,6 +37,7 @@ const Login = (props) => {
 
       navigate("/");
     } else {
+      setLoading(false);
       props.showAlert("Invalid credentials", "danger");
     }
   };
