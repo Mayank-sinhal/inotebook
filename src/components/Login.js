@@ -5,6 +5,7 @@ import { REACT_APP_HOST_STRING } from "../helper";
 const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const { isDarkTheme } = useContext(themeContext);
+  const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
 
   const onchange = (e) => {
@@ -13,6 +14,7 @@ const Login = (props) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
+    setLoading(false);
     const response = await fetch(`${REACT_APP_HOST_STRING}/api/auth/login`, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
 
@@ -26,6 +28,7 @@ const Login = (props) => {
     });
     const json = await response.json();
     if (json.success) {
+      setLoading(true);
       //save the auth token and redirect
       localStorage.setItem("token", json.authtoken);
       // localStorage.setItem("name", json.name);
@@ -75,7 +78,7 @@ const Login = (props) => {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Submit
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
